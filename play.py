@@ -14,11 +14,11 @@ class Chorus():
         try:
             note = message.note
             l = self._free_linkbots.pop()
-            l.setBuzzerFrequency(pow(2, (note-61)/12)*440)
+            l.buzzer.set_frequency(pow(2, (note-61)/12)*440)
             r = random.randint(0, 255)
             g = random.randint(0, 255)
             b = random.randint(0, 255)
-            l.setLedColor(r, g, b)
+            l.led.set_color(r, g, b)
             self._singing_linkbots[str(message.channel)+" "+str(message.note)] = l
         except Exception as e:
             print(e)
@@ -27,7 +27,7 @@ class Chorus():
         try:
             key = str(message.channel)+" "+str(message.note)
             l = self._singing_linkbots[key]
-            l.setBuzzerFrequency(0)
+            l.buzzer.set_frequency(0)
             del self._singing_linkbots[key]
             self._free_linkbots.add(l)
         except Exception as e:
@@ -38,7 +38,7 @@ def main():
         print('Usage: {} <filename.mid>'.format(sys.argv[0]))
         sys.exit(-1)
 
-    chorus = Chorus(['6RW8', 'DGKR', 'ZRG6', 'D247'])
+    chorus = Chorus(['ZRG6', ])
     f = mido.MidiFile(sys.argv[1])
     f.ticks_per_beat = f.ticks_per_beat*3
     #f = mido.MidiFile('bohemian1.mid')
